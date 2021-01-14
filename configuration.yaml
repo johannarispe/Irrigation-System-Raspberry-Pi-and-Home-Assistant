@@ -1,0 +1,161 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+homeassistant:
+  name: AP-SP
+  latitude: {lat} # add yours here 
+  longitude: {long} # add yours here 
+  unit_system: metric
+  time_zone: America/Sao_Paulo
+  elevation: 745
+
+# Lets encrypt cert config
+http:
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# Setting up a time to control max time for the pump
+timer:
+  watering_timer:
+    duration: '00:01:00'
+
+# Defining the gpio for sensor
+binary_sensor:
+  - platform: rpi_gpio
+    ports:
+        10: humedad_tierra
+    invert_logic: true
+# Defining the gpio for the pump relay and template
+switch:
+  - platform: rpi_gpio
+    ports:
+      04: water_pump_relay
+    invert_logic: true
+
+  - platform: template
+    switches:
+      water_pump_controller:
+        turn_on:
+          service: switch.turn_on
+          data:
+            entity_id: switch.water_pump_relay
+        turn_off:
+          service: switch.turn_off
+          data:
+            entity_id: switch.water_pump_relay
+        icon_template: >-
+          {% if is_state('switch.water_pump_relay', 'on') %}
+            hass:water-pump
+          {% elif is_state('switch.water_pump_relay', 'off') %}
+            hass:flower
+          {% endif %}
+        entity_picture_template: >-
+          {% if is_state('switch.water_pump_relay', 'on') %}
+            hass:water-pump
+          {% elif is_state('switch.water_pump_relay', 'off')%}
+            hass:flower
+          {% endif %}
+        
+
+camera:
+  - platform: ffmpeg
+    name: cam_sp
+    input: rtmp://10.10.10.10:8888/{admin:password} # add yours here 
+
+# Raspberry System sensors
+sensor:
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+      - type: memory_free
+      - type: processor_temperature
+      - type: processor_use
+      - type: memory_use
+      - type: disk_use
+        arg: /config
+      - type: disk_free
+      - type: ipv4_address
+        arg: eth0
+
+  - platform: history_stats
+    name: Actividad de irrigacion
+    entity_id: switch.water_pump_controller
+    state: 'on'
+    type: count
+    start: '{{ 0 }}'
+    end: '{{ now() }}'
+
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'time_date'
+
+recorder:
+  # Specify the number of history days to keep in recorder database after a purge.
+  purge_keep_days: 1
+  commit_interval: 2
+              # Everything is included by default.  
+              # Ensure you are keeping only what you need to keep DB small
+  db_integrity_check: true 
+  # Automatically purge the database every night at 04:12 local time
+  auto_purge: true 
+  include:    # Include everything you graph and will want to see later
+    domains:
+      - binary_sensor
+      - switch
+      - sensor
+    entities:
+      - automation.timerswitch
+      - timer.watering_timer
+      - switch.water_pump_controller
+      - binary_sensor.humedad_tierra
+              # Everything is included by default.  
+  exclude:    # Eliminate anything that you never graph or refer back to
+    domains:
+      - automation
+      - updater
+      - person
+      - zone
+      - device
+      - hassio
+      - camera
+    entity_globs:
+      - sensor.phone_*
+      - sensor.disk_*
+    entities:
+      - sun.sun
+      - sensor.time
+      - sensor.date
+      - sensor.date_time
+      - sensor.time_date
+      - sensor.date_time_iso # Don't record date and time
+      - sensor.yr_symbol # Ignore this as well
+      - group.weather # Don't save weather 
+      - device_tracker.phone
+      - persistent_notification.config_entry_discovery
+      - sensor.cpu_temperature
+      - sensor.disk_use_percent
+      - sensor.memory_free
+      - sensor.memory_use
+      - sensor.processor_temperature
+      - sensor.processor_use_percent
+      - sensor.ipv4_address_eth0
+      - automation.timercancel
+      - automation.timerstop
+      - binary_sensor.updater
+      - binary_sensor.rpi_power_status
+      - switch.water_pump_relay
+
+python_script:
