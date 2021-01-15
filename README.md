@@ -8,5 +8,5 @@ It is intended to work with:
 * Peristaltic water pump
 
 You can find more information and instructions here:
-* [Read complete article] (https://medium.com/@johannarispe/iot-irrigation-hack-for-the-holidays-raspberry-home-assistant-d7f2bba90d41)
+* [Read complete article](https://medium.com/@johannarispe/iot-irrigation-hack-for-the-holidays-raspberry-home-assistant-d7f2bba90d41)
 * [Watch the demo video](https://youtu.be/4R1fgEKobtA) 
