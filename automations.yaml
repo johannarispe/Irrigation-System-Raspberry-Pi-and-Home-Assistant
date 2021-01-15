@@ -1,3 +1,5 @@
+# Configuration for the automation of the timer. Allowing to control 3 states of it.
+
 - alias: Timerswitch
   id: Timerstart
   trigger:
