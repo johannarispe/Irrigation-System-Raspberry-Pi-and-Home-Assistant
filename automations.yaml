@@ -1,0 +1,29 @@
+- alias: Timerswitch
+  id: Timerstart
+  trigger:
+  - platform: state
+    entity_id: switch.water_pump_controller
+    to: 'on'
+  action:
+  - service: timer.start
+    entity_id: timer.watering_timer
+- alias: Timercancel
+  id: Timercancel
+  trigger:
+  - platform: state
+    entity_id: switch.water_pump_controller
+    to: 'off'
+  action:
+  - service: timer.cancel
+    entity_id: timer.watering_timer
+
+- id: Timerstop
+  alias: Timerstop
+  trigger:
+  - platform: event
+    event_type: timer.finished
+    event_data:
+      entity_id: timer.watering_timer
+  action:
+  - service: switch.turn_off
+    entity_id: switch.water_pump_controller

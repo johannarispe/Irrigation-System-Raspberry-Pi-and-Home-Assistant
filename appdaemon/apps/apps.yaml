@@ -1,0 +1,7 @@
+---
+water_pump_scheduler:
+  module: water_pump_scheduler
+  class: Watering
+  water_pump_switch : switch.water_pump_controller
+  evening_schedule: "19:30:00"
+  morning_schedule: "08:30:00"
