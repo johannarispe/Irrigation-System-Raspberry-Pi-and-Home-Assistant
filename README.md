@@ -1,5 +1,5 @@
 # IoT Irrigation hack for the holidays
-There are alternative ways to take care of your dear plants over the holidays. Raspberry pi + Home Assistant + a Water pump will do it.
+There is an alternative way to take care of your dear plants over the holidays. Raspberry pi + Home Assistant + a Water pump will do it.
 
 This project is part of the water irrigation experiment. 
 It is intended to work with: 
@@ -9,4 +9,4 @@ It is intended to work with:
 
 You can find more information and instructions here:
 * [Read complete article](https://medium.com/@johannarispe/iot-irrigation-hack-for-the-holidays-raspberry-home-assistant-d7f2bba90d41)
-* [Watch the demo video](https://youtu.be/4R1fgEKobtA) 
+* [Watch demo video](https://youtu.be/4R1fgEKobtA) 
