@@ -7,5 +7,6 @@ It is intended to work with:
 * [Home Assistant](https://home-assistant.io/)
 * Peristaltic water pump
 
-You can find the complete article, with instruction here: 
-See the [demo video](https://youtu.be/4R1fgEKobtA) 
+You can find more information and instructions here:
+* [Read complete article] (https://medium.com/@johannarispe/iot-irrigation-hack-for-the-holidays-raspberry-home-assistant-d7f2bba90d41)
+* [Watch the demo video](https://youtu.be/4R1fgEKobtA) 
